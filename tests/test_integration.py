@@ -5,9 +5,8 @@ CRUD tests use https://84em.blog as the test monitor URL.
 """
 
 import os
-import time
+
 import pytest
-import asyncio
 
 from uptimerobot_mcp.client import call_api
 
@@ -37,7 +36,8 @@ async def test_get_account_details() -> None:
     account = result["account"]
     assert "email" in account
     assert "monitor_limit" in account
-    print(f"\nAccount: {account['email']}, monitors: {account['up_monitors']} up / {account['down_monitors']} down")
+    up, down = account["up_monitors"], account["down_monitors"]
+    print(f"\nAccount: {account['email']}, monitors: {up} up / {down} down")
 
 
 # ---------------------------------------------------------------------------
@@ -61,7 +61,9 @@ async def test_get_monitors_filtered_by_status() -> None:
     assert result["stat"] == "ok"
     monitors = result.get("monitors", [])
     for m in monitors:
-        assert m["status"] == 2, f"Expected status 2 (up), got {m['status']} for {m['friendly_name']}"
+        assert m["status"] == 2, (
+            f"Expected status 2 (up), got {m['status']} for {m['friendly_name']}"
+        )
     print(f"\nUp monitors returned: {len(monitors)}")
 
 

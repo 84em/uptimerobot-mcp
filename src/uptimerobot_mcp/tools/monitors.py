@@ -88,7 +88,9 @@ def register_monitor_tools(mcp: FastMCP) -> None:
         if not (1 <= logs_limit <= 50):
             raise ValueError(f"logs_limit must be between 1 and 50, got {logs_limit}")
         if not (1 <= response_times_limit <= 50):
-            raise ValueError(f"response_times_limit must be between 1 and 50, got {response_times_limit}")
+            raise ValueError(
+                f"response_times_limit must be between 1 and 50, got {response_times_limit}"
+            )
         params: dict[str, Any] = {
             "monitors": monitor_id,
             "logs": 1 if include_logs else 0,
