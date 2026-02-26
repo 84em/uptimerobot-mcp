@@ -28,6 +28,7 @@ def require_api_key() -> None:
 # Account
 # ---------------------------------------------------------------------------
 
+
 @pytest.mark.asyncio
 async def test_get_account_details() -> None:
     require_api_key()
@@ -43,6 +44,7 @@ async def test_get_account_details() -> None:
 # ---------------------------------------------------------------------------
 # Monitors - list
 # ---------------------------------------------------------------------------
+
 
 @pytest.mark.asyncio
 async def test_get_monitors() -> None:
@@ -71,16 +73,20 @@ async def test_get_monitors_filtered_by_status() -> None:
 # Monitors - CRUD
 # ---------------------------------------------------------------------------
 
+
 @pytest.mark.asyncio
 async def test_create_monitor() -> None:
     global created_monitor_id
     require_api_key()
-    result = await call_api("newMonitor", {
-        "friendly_name": TEST_MONITOR_NAME,
-        "url": TEST_URL,
-        "type": 1,
-        "interval": 300,
-    })
+    result = await call_api(
+        "newMonitor",
+        {
+            "friendly_name": TEST_MONITOR_NAME,
+            "url": TEST_URL,
+            "type": 1,
+            "interval": 300,
+        },
+    )
     assert result["stat"] == "ok", f"Create failed: {result}"
     created_monitor_id = result["monitor"]["id"]
     assert isinstance(created_monitor_id, int)
@@ -92,11 +98,14 @@ async def test_get_single_monitor() -> None:
     require_api_key()
     if not created_monitor_id:
         pytest.skip("No monitor created yet")
-    result = await call_api("getMonitors", {
-        "monitors": created_monitor_id,
-        "logs": 1,
-        "alert_contacts": 1,
-    })
+    result = await call_api(
+        "getMonitors",
+        {
+            "monitors": created_monitor_id,
+            "logs": 1,
+            "alert_contacts": 1,
+        },
+    )
     assert result["stat"] == "ok"
     monitors = result.get("monitors", [])
     assert len(monitors) == 1
@@ -113,11 +122,14 @@ async def test_edit_monitor() -> None:
     if not created_monitor_id:
         pytest.skip("No monitor created yet")
     new_name = TEST_MONITOR_NAME + " (edited)"
-    result = await call_api("editMonitor", {
-        "id": created_monitor_id,
-        "friendly_name": new_name,
-        "interval": 600,
-    })
+    result = await call_api(
+        "editMonitor",
+        {
+            "id": created_monitor_id,
+            "friendly_name": new_name,
+            "interval": 600,
+        },
+    )
     assert result["stat"] == "ok", f"Edit failed: {result}"
     assert result["monitor"]["id"] == created_monitor_id
     print(f"\nEdited monitor {created_monitor_id} -> interval 600s")
@@ -154,11 +166,14 @@ async def test_get_monitor_logs() -> None:
     require_api_key()
     if not created_monitor_id:
         pytest.skip("No monitor created yet")
-    result = await call_api("getMonitors", {
-        "monitors": created_monitor_id,
-        "logs": 1,
-        "logs_limit": 10,
-    })
+    result = await call_api(
+        "getMonitors",
+        {
+            "monitors": created_monitor_id,
+            "logs": 1,
+            "logs_limit": 10,
+        },
+    )
     assert result["stat"] == "ok"
     monitors = result.get("monitors", [])
     assert len(monitors) == 1
@@ -181,6 +196,7 @@ async def test_delete_monitor() -> None:
 # Alert Contacts - CRUD
 # ---------------------------------------------------------------------------
 
+
 @pytest.mark.asyncio
 async def test_get_alert_contacts() -> None:
     require_api_key()
@@ -195,11 +211,14 @@ async def test_create_alert_contact() -> None:
     global created_contact_id
     require_api_key()
     try:
-        result = await call_api("newAlertContact", {
-            "type": 2,
-            "friendly_name": "MCP Test Contact",
-            "value": "mcp-test@84em.blog",
-        })
+        result = await call_api(
+            "newAlertContact",
+            {
+                "type": 2,
+                "friendly_name": "MCP Test Contact",
+                "value": "mcp-test@84em.blog",
+            },
+        )
     except ValueError as e:
         if "only 1 active alert contact" in str(e) or "not_authorized" in str(e):
             pytest.skip(f"Plan limit reached for alert contacts: {e}")
@@ -214,10 +233,13 @@ async def test_edit_alert_contact() -> None:
     require_api_key()
     if not created_contact_id:
         pytest.skip("No contact created yet")
-    result = await call_api("editAlertContact", {
-        "id": created_contact_id,
-        "friendly_name": "MCP Test Contact (edited)",
-    })
+    result = await call_api(
+        "editAlertContact",
+        {
+            "id": created_contact_id,
+            "friendly_name": "MCP Test Contact (edited)",
+        },
+    )
     assert result["stat"] == "ok", f"Edit contact failed: {result}"
     print(f"\nEdited contact {created_contact_id}")
 
@@ -236,6 +258,7 @@ async def test_delete_alert_contact() -> None:
 # Maintenance Windows - CRUD
 # ---------------------------------------------------------------------------
 
+
 @pytest.mark.asyncio
 async def test_get_mwindows() -> None:
     require_api_key()
@@ -250,12 +273,15 @@ async def test_create_mwindow() -> None:
     global created_mwindow_id
     require_api_key()
     # Daily window: start_time is HH:MM for recurring types (2/3/4)
-    result = await call_api("newMWindow", {
-        "friendly_name": "MCP Test Window",
-        "type": 2,
-        "start_time": "02:00",
-        "duration": 30,
-    })
+    result = await call_api(
+        "newMWindow",
+        {
+            "friendly_name": "MCP Test Window",
+            "type": 2,
+            "start_time": "02:00",
+            "duration": 30,
+        },
+    )
     assert result["stat"] == "ok", f"Create mwindow failed: {result}"
     created_mwindow_id = result["mwindow"]["id"]
     print(f"\nCreated maintenance window ID: {created_mwindow_id}")
@@ -266,11 +292,14 @@ async def test_edit_mwindow() -> None:
     require_api_key()
     if not created_mwindow_id:
         pytest.skip("No mwindow created yet")
-    result = await call_api("editMWindow", {
-        "id": created_mwindow_id,
-        "friendly_name": "MCP Test Window (edited)",
-        "duration": 60,
-    })
+    result = await call_api(
+        "editMWindow",
+        {
+            "id": created_mwindow_id,
+            "friendly_name": "MCP Test Window (edited)",
+            "duration": 60,
+        },
+    )
     assert result["stat"] == "ok", f"Edit mwindow failed: {result}"
     print(f"\nEdited mwindow {created_mwindow_id}")
 

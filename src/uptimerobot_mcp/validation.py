@@ -33,9 +33,7 @@ def validate_statuses(statuses: str) -> None:
         )
     for code in statuses.split("-"):
         if int(code) not in valid_codes:
-            raise ValueError(
-                f"invalid status code {code!r}; valid values are 0, 1, 2, 8, 9"
-            )
+            raise ValueError(f"invalid status code {code!r}; valid values are 0, 1, 2, 8, 9")
 
 
 def validate_alert_contacts(alert_contacts: str) -> None:
