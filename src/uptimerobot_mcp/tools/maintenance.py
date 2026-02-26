@@ -42,7 +42,7 @@ def register_maintenance_tools(mcp: FastMCP) -> None:
             friendly_name: Display name for the maintenance window.
             type: Window recurrence type. 1=Once, 2=Daily, 3=Weekly, 4=Monthly.
             start_time: For type 1 (Once): Unix timestamp of the start time.
-                For types 2-4 (recurring): seconds from midnight (e.g. 3600 = 1:00 AM).
+                For types 2-4 (recurring): time string in HH:MM format (e.g. "02:00").
             duration: Duration of the window in minutes.
             value: Required for Weekly and Monthly types.
                 Weekly (type 3): dash-separated days of week, 1=Mon through 7=Sun.
