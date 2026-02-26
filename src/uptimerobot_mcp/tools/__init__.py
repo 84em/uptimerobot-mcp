@@ -1,0 +1,1 @@
+"""UptimeRobot MCP tool registrations."""
