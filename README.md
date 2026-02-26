@@ -25,7 +25,7 @@ A [Model Context Protocol](https://modelcontextprotocol.io/) server for managing
 
 - Python 3.12+
 - A [UptimeRobot](https://uptimerobot.com/) account
-- Your UptimeRobot API key from [My Settings](https://uptimerobot.com/dashboard#mySettings)
+- Your UptimeRobot API key from the dashboard under **Integrations & API → API**
 
 ---
 
@@ -73,7 +73,7 @@ Or create a `.env` file in your working directory (see [.env.example](.env.examp
 UPTIMEROBOT_API_KEY=u123456-yourApiKeyHere
 ```
 
-Your API key is available in the UptimeRobot dashboard under **My Settings > API Settings**.
+Your API key is available in the UptimeRobot dashboard under **Integrations & API → API** in the left sidebar. A read-only API key is also available there if you only need monitoring access.
 
 ---
 
