@@ -1,10 +1,8 @@
 # UptimeRobot MCP
 
-[![PyPI version](https://img.shields.io/pypi/v/uptimerobot-mcp)](https://pypi.org/project/uptimerobot-mcp/)
-[![Python versions](https://img.shields.io/pypi/pyversions/uptimerobot-mcp)](https://pypi.org/project/uptimerobot-mcp/)
 [![CI](https://img.shields.io/github/actions/workflow/status/84em/uptimerobot-mcp/ci.yml?branch=main)](https://github.com/84em/uptimerobot-mcp/actions)
 [![License: MIT](https://img.shields.io/github/license/84em/uptimerobot-mcp)](LICENSE)
-[![Downloads](https://img.shields.io/pypi/dm/uptimerobot-mcp)](https://pypi.org/project/uptimerobot-mcp/)
+[![Python versions](https://img.shields.io/badge/python-3.12%2B-blue)](https://www.python.org/)
 
 A [Model Context Protocol](https://modelcontextprotocol.io/) server for managing [UptimeRobot](https://uptimerobot.com/) monitors, alert contacts, and maintenance windows via the UptimeRobot API v2.
 
@@ -26,28 +24,11 @@ A [Model Context Protocol](https://modelcontextprotocol.io/) server for managing
 - Python 3.12+
 - A [UptimeRobot](https://uptimerobot.com/) account
 - Your UptimeRobot API key from the dashboard under **Integrations & API → API**
+- [uv](https://docs.astral.sh/uv/) installed
 
 ---
 
 ## Installation
-
-### Run with uvx (recommended)
-
-```bash
-uvx uptimerobot-mcp
-```
-
-### Install with uv
-
-```bash
-uv add uptimerobot-mcp
-```
-
-### Install with pip
-
-```bash
-pip install uptimerobot-mcp
-```
 
 ### Install from source
 
@@ -88,8 +69,8 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS)
 {
   "mcpServers": {
     "uptimerobot": {
-      "command": "uvx",
-      "args": ["uptimerobot-mcp"],
+      "command": "uv",
+      "args": ["run", "--directory", "/path/to/uptimerobot-mcp", "uptimerobot-mcp"],
       "env": {
         "UPTIMEROBOT_API_KEY": "u123456-yourApiKeyHere"
       }
@@ -106,8 +87,8 @@ Add to your Cursor MCP settings:
 {
   "mcpServers": {
     "uptimerobot": {
-      "command": "uvx",
-      "args": ["uptimerobot-mcp"],
+      "command": "uv",
+      "args": ["run", "--directory", "/path/to/uptimerobot-mcp", "uptimerobot-mcp"],
       "env": {
         "UPTIMEROBOT_API_KEY": "u123456-yourApiKeyHere"
       }
@@ -125,8 +106,8 @@ Add to your Zed settings:
   "context_servers": {
     "uptimerobot": {
       "command": {
-        "path": "uvx",
-        "args": ["uptimerobot-mcp"],
+        "path": "uv",
+        "args": ["run", "--directory", "/path/to/uptimerobot-mcp", "uptimerobot-mcp"],
         "env": {
           "UPTIMEROBOT_API_KEY": "u123456-yourApiKeyHere"
         }
