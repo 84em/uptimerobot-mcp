@@ -7,6 +7,7 @@ from typing import Any
 from fastmcp import FastMCP
 
 from uptimerobot_mcp.client import call_api
+from uptimerobot_mcp.validation import validate_pagination
 
 
 def register_maintenance_tools(mcp: FastMCP) -> None:
@@ -24,6 +25,7 @@ def register_maintenance_tools(mcp: FastMCP) -> None:
             offset: Pagination offset (default 0).
             limit: Number of windows to return, max 50 (default 50).
         """
+        validate_pagination(limit, offset)
         return await call_api(
             "getMWindows",
             {"offset": offset, "limit": limit},

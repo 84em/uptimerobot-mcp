@@ -7,6 +7,14 @@ from typing import Any
 from fastmcp import FastMCP
 
 from uptimerobot_mcp.client import call_api
+from uptimerobot_mcp.validation import (
+    validate_alert_contacts,
+    validate_custom_http_headers,
+    validate_interval,
+    validate_pagination,
+    validate_statuses,
+    validate_timeout,
+)
 
 
 def register_monitor_tools(mcp: FastMCP) -> None:
@@ -38,6 +46,9 @@ def register_monitor_tools(mcp: FastMCP) -> None:
             include_alert_contacts: Include attached alert contacts in response.
             include_mwindows: Include attached maintenance windows in response.
         """
+        validate_pagination(limit, offset)
+        if statuses:
+            validate_statuses(statuses)
         params: dict[str, Any] = {
             "offset": offset,
             "limit": limit,
@@ -74,6 +85,10 @@ def register_monitor_tools(mcp: FastMCP) -> None:
             logs_limit: Number of log entries to return (default 25).
             response_times_limit: Number of response time entries to return (default 24).
         """
+        if not (1 <= logs_limit <= 50):
+            raise ValueError(f"logs_limit must be between 1 and 50, got {logs_limit}")
+        if not (1 <= response_times_limit <= 50):
+            raise ValueError(f"response_times_limit must be between 1 and 50, got {response_times_limit}")
         params: dict[str, Any] = {
             "monitors": monitor_id,
             "logs": 1 if include_logs else 0,
@@ -138,6 +153,12 @@ def register_monitor_tools(mcp: FastMCP) -> None:
             alert_contacts: Alert contacts to attach, format "id_threshold_recurrence".
                 Separate multiple contacts with "-". Example: "123_0_0-456_0_0".
         """
+        validate_interval(interval)
+        validate_timeout(timeout)
+        if custom_http_headers is not None:
+            validate_custom_http_headers(custom_http_headers)
+        if alert_contacts is not None:
+            validate_alert_contacts(alert_contacts)
         params: dict[str, Any] = {
             "friendly_name": friendly_name,
             "url": url,
@@ -204,6 +225,14 @@ def register_monitor_tools(mcp: FastMCP) -> None:
             ignore_ssl_errors: Whether to ignore SSL errors.
             alert_contacts: New alert contacts string (replaces all existing).
         """
+        if interval is not None:
+            validate_interval(interval)
+        if timeout is not None:
+            validate_timeout(timeout)
+        if custom_http_headers is not None:
+            validate_custom_http_headers(custom_http_headers)
+        if alert_contacts is not None:
+            validate_alert_contacts(alert_contacts)
         params: dict[str, Any] = {"id": monitor_id}
         optional_fields: dict[str, Any] = {
             "friendly_name": friendly_name,
@@ -260,6 +289,7 @@ def register_monitor_tools(mcp: FastMCP) -> None:
             limit: Number of log entries to return (default 25).
             offset: Pagination offset (default 0).
         """
+        validate_pagination(limit, offset)
         params: dict[str, Any] = {
             "monitors": monitor_id,
             "logs": 1,

@@ -7,6 +7,7 @@ from typing import Any
 from fastmcp import FastMCP
 
 from uptimerobot_mcp.client import call_api
+from uptimerobot_mcp.validation import validate_pagination
 
 
 def register_contact_tools(mcp: FastMCP) -> None:
@@ -24,6 +25,7 @@ def register_contact_tools(mcp: FastMCP) -> None:
             offset: Pagination offset (default 0).
             limit: Number of contacts to return, max 50 (default 50).
         """
+        validate_pagination(limit, offset)
         return await call_api(
             "getAlertContacts",
             {"offset": offset, "limit": limit},
