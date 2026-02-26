@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from fastmcp import FastMCP
 
 from uptimerobot_mcp.client import call_api
@@ -14,7 +16,7 @@ def register_contact_tools(mcp: FastMCP) -> None:
     async def get_alert_contacts(
         offset: int = 0,
         limit: int = 50,
-    ) -> dict:
+    ) -> dict[str, Any]:
         """
         Get all alert contacts.
 
@@ -32,7 +34,7 @@ def register_contact_tools(mcp: FastMCP) -> None:
         type: int,
         friendly_name: str,
         value: str,
-    ) -> dict:
+    ) -> dict[str, Any]:
         """
         Create a new alert contact.
 
@@ -43,7 +45,7 @@ def register_contact_tools(mcp: FastMCP) -> None:
             value: Contact destination. Email address for type 2, phone number
                 for type 1, webhook URL for type 5, etc.
         """
-        params: dict = {
+        params: dict[str, Any] = {
             "type": type,
             "friendly_name": friendly_name,
             "value": value,
@@ -55,7 +57,7 @@ def register_contact_tools(mcp: FastMCP) -> None:
         contact_id: int,
         friendly_name: str | None = None,
         value: str | None = None,
-    ) -> dict:
+    ) -> dict[str, Any]:
         """
         Edit an existing alert contact.
 
@@ -64,7 +66,7 @@ def register_contact_tools(mcp: FastMCP) -> None:
             friendly_name: New display name.
             value: New contact destination (email, phone, URL, etc.).
         """
-        params: dict = {"id": contact_id}
+        params: dict[str, Any] = {"id": contact_id}
         if friendly_name is not None:
             params["friendly_name"] = friendly_name
         if value is not None:
@@ -72,7 +74,7 @@ def register_contact_tools(mcp: FastMCP) -> None:
         return await call_api("editAlertContact", params)
 
     @mcp.tool()
-    async def delete_alert_contact(contact_id: int) -> dict:
+    async def delete_alert_contact(contact_id: int) -> dict[str, Any]:
         """
         Delete an alert contact by ID.
 

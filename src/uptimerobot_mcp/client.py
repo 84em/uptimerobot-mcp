@@ -1,6 +1,7 @@
 """UptimeRobot API v2 async client."""
 
 import os
+from typing import Any
 
 import httpx
 from dotenv import load_dotenv
@@ -20,7 +21,7 @@ def _get_api_key() -> str:
     return key
 
 
-async def call_api(endpoint: str, params: dict) -> dict:
+async def call_api(endpoint: str, params: dict[str, Any]) -> dict[str, Any]:
     """Make an authenticated POST request to the UptimeRobot API v2."""
     api_key = _get_api_key()
     payload = {"api_key": api_key, "format": "json", **params}
@@ -33,10 +34,10 @@ async def call_api(endpoint: str, params: dict) -> dict:
         )
         response.raise_for_status()
 
-    result = response.json()
+    result: dict[str, Any] = response.json()
 
     if result.get("stat") == "fail":
-        error = result.get("error", {})
+        error: dict[str, Any] = result.get("error", {})
         message = error.get("message", "Unknown error")
         error_type = error.get("type", "unknown")
         raise ValueError(f"UptimeRobot API error [{error_type}]: {message}")

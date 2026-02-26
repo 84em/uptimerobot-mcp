@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from fastmcp import FastMCP
 
 from uptimerobot_mcp.client import call_api
@@ -20,7 +22,7 @@ def register_monitor_tools(mcp: FastMCP) -> None:
         include_response_times: bool = False,
         include_alert_contacts: bool = False,
         include_mwindows: bool = False,
-    ) -> dict:
+    ) -> dict[str, Any]:
         """
         Get all monitors with optional filtering.
 
@@ -36,7 +38,7 @@ def register_monitor_tools(mcp: FastMCP) -> None:
             include_alert_contacts: Include attached alert contacts in response.
             include_mwindows: Include attached maintenance windows in response.
         """
-        params: dict = {
+        params: dict[str, Any] = {
             "offset": offset,
             "limit": limit,
             "logs": 1 if include_logs else 0,
@@ -59,7 +61,7 @@ def register_monitor_tools(mcp: FastMCP) -> None:
         include_mwindows: bool = True,
         logs_limit: int = 25,
         response_times_limit: int = 24,
-    ) -> dict:
+    ) -> dict[str, Any]:
         """
         Get a single monitor by ID with detailed information.
 
@@ -72,7 +74,7 @@ def register_monitor_tools(mcp: FastMCP) -> None:
             logs_limit: Number of log entries to return (default 25).
             response_times_limit: Number of response time entries to return (default 24).
         """
-        params: dict = {
+        params: dict[str, Any] = {
             "monitors": monitor_id,
             "logs": 1 if include_logs else 0,
             "logs_limit": logs_limit,
@@ -104,7 +106,7 @@ def register_monitor_tools(mcp: FastMCP) -> None:
         custom_http_statuses: str | None = None,
         ignore_ssl_errors: bool = False,
         alert_contacts: str | None = None,
-    ) -> dict:
+    ) -> dict[str, Any]:
         """
         Create a new monitor.
 
@@ -136,7 +138,7 @@ def register_monitor_tools(mcp: FastMCP) -> None:
             alert_contacts: Alert contacts to attach, format "id_threshold_recurrence".
                 Separate multiple contacts with "-". Example: "123_0_0-456_0_0".
         """
-        params: dict = {
+        params: dict[str, Any] = {
             "friendly_name": friendly_name,
             "url": url,
             "type": type,
@@ -144,7 +146,7 @@ def register_monitor_tools(mcp: FastMCP) -> None:
             "timeout": timeout,
             "ignore_ssl_errors": 1 if ignore_ssl_errors else 0,
         }
-        optional_fields: dict = {
+        optional_fields: dict[str, Any] = {
             "http_method": http_method,
             "keyword_type": keyword_type,
             "keyword_value": keyword_value,
@@ -180,7 +182,7 @@ def register_monitor_tools(mcp: FastMCP) -> None:
         custom_http_statuses: str | None = None,
         ignore_ssl_errors: bool | None = None,
         alert_contacts: str | None = None,
-    ) -> dict:
+    ) -> dict[str, Any]:
         """
         Edit an existing monitor. Only provided fields are updated.
 
@@ -202,8 +204,8 @@ def register_monitor_tools(mcp: FastMCP) -> None:
             ignore_ssl_errors: Whether to ignore SSL errors.
             alert_contacts: New alert contacts string (replaces all existing).
         """
-        params: dict = {"id": monitor_id}
-        optional_fields: dict = {
+        params: dict[str, Any] = {"id": monitor_id}
+        optional_fields: dict[str, Any] = {
             "friendly_name": friendly_name,
             "url": url,
             "interval": interval,
@@ -225,7 +227,7 @@ def register_monitor_tools(mcp: FastMCP) -> None:
         return await call_api("editMonitor", params)
 
     @mcp.tool()
-    async def delete_monitor(monitor_id: int) -> dict:
+    async def delete_monitor(monitor_id: int) -> dict[str, Any]:
         """
         Permanently delete a monitor by ID.
 
@@ -235,7 +237,7 @@ def register_monitor_tools(mcp: FastMCP) -> None:
         return await call_api("deleteMonitor", {"id": monitor_id})
 
     @mcp.tool()
-    async def reset_monitor(monitor_id: int) -> dict:
+    async def reset_monitor(monitor_id: int) -> dict[str, Any]:
         """
         Reset a monitor, clearing all historical statistics and logs.
 
@@ -249,7 +251,7 @@ def register_monitor_tools(mcp: FastMCP) -> None:
         monitor_id: int,
         limit: int = 25,
         offset: int = 0,
-    ) -> dict:
+    ) -> dict[str, Any]:
         """
         Get up/down event logs for a specific monitor.
 
@@ -258,7 +260,7 @@ def register_monitor_tools(mcp: FastMCP) -> None:
             limit: Number of log entries to return (default 25).
             offset: Pagination offset (default 0).
         """
-        params: dict = {
+        params: dict[str, Any] = {
             "monitors": monitor_id,
             "logs": 1,
             "logs_limit": limit,
